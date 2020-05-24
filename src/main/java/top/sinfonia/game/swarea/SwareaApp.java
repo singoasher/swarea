@@ -5,12 +5,20 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
-import com.almasb.fxgl.input.Input;
-import com.almasb.fxgl.input.UserAction;
+import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import top.sinfonia.game.swarea.common.FormatUtil;
 import top.sinfonia.game.swarea.common.SwareaConstants;
 import top.sinfonia.game.swarea.common.SwareaEntityNames;
 import top.sinfonia.game.swarea.components.PlayerComponent;
+
+import java.util.Map;
+
+import static com.almasb.fxgl.dsl.FXGL.*;
 
 /**
  * @author sunzhaojie
@@ -20,35 +28,38 @@ public class SwareaApp extends GameApplication {
     private PlayerComponent playerComponent;
 
     @Override
+    protected void initUI() {
+        Text uiScore = new Text("");
+        uiScore.setFont(Font.font(18));
+        uiScore.setTranslateX(getAppWidth() - 200);
+        uiScore.setTranslateY(50);
+        uiScore.fillProperty().bind(getop("stageColor"));
+        uiScore.textProperty().bind(getsp("position"));
+
+        addUINode(uiScore);
+
+        Group dpadView = getInput().createVirtualDpadView();
+
+        addUINode(dpadView, 0, 625);
+    }
+
+    @Override
+    protected void onUpdate(double tpf) {
+        FXGL.set("position", FormatUtil.format(playerComponent.getEntity().getPosition()));
+    }
+
+    @Override
+    protected void initGameVars(Map<String, Object> vars) {
+        vars.put("stageColor", Color.BLACK);
+        vars.put("position", FormatUtil.format(new Point2D(0, 0)));
+    }
+
+    @Override
     protected void initInput() {
-        Input input = FXGL.getInput();
-        input.addAction(new UserAction(KeyCode.UP.getName()) {
-            @Override
-            protected void onActionBegin() {
-                playerComponent.moveUp();
-            }
-        }, KeyCode.UP);
-
-        input.addAction(new UserAction(KeyCode.LEFT.getName()) {
-            @Override
-            protected void onActionBegin() {
-                playerComponent.moveLeft();
-            }
-        }, KeyCode.LEFT);
-
-        input.addAction(new UserAction(KeyCode.DOWN.getName()) {
-            @Override
-            protected void onActionBegin() {
-                playerComponent.moveDown();
-            }
-        }, KeyCode.DOWN);
-
-        input.addAction(new UserAction(KeyCode.RIGHT.getName()) {
-            @Override
-            protected void onActionBegin() {
-                playerComponent.moveRight();
-            }
-        }, KeyCode.RIGHT);
+        FXGL.onKey(KeyCode.LEFT, () -> playerComponent.left());
+        FXGL.onKey(KeyCode.UP, () -> playerComponent.up());
+        FXGL.onKey(KeyCode.RIGHT, () -> playerComponent.right());
+        FXGL.onKey(KeyCode.DOWN, () -> playerComponent.down());
     }
 
     @Override

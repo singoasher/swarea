@@ -32,12 +32,17 @@ public class SwareaFactory implements EntityFactory {
 
     @Spawns(SwareaEntityNames.PLAYER)
     public Entity newPlayer(SpawnData data) {
-        return FXGL.entityBuilder()
+        Entity player = FXGL.entityBuilder()
                 .type(SwareaType.PLAYER)
                 .from(data)
                 .viewWithBBox(new Rectangle(SQUARE_SIZE, SQUARE_SIZE, Color.ORANGE))
                 .with(new CollidableComponent(true))
                 .with(new PlayerComponent())
                 .build();
+
+        FXGL.getGameScene().getViewport()
+                .setBounds(0, 0, FXGL.getAppWidth(), FXGL.getAppHeight());
+
+        return player;
     }
 }

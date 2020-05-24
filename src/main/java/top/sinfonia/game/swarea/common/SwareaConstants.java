@@ -14,10 +14,10 @@ public class SwareaConstants {
     /**
      * 窗口初始化宽
      */
-    public static final int WINDOW_INIT_WIDTH = 800;
+    public static final int WINDOW_INIT_WIDTH = 1600;
 
     /**
      * 窗口初始化高
      */
-    public static final int WINDOW_INIT_HEIGHT = 600;
+    public static final int WINDOW_INIT_HEIGHT = 1000;
 }
