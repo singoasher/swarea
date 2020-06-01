@@ -5,6 +5,7 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
+import com.almasb.fxgl.localization.Language;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
@@ -16,6 +17,7 @@ import top.sinfonia.game.swarea.common.SwareaConstants;
 import top.sinfonia.game.swarea.common.SwareaEntityNames;
 import top.sinfonia.game.swarea.components.PlayerComponent;
 
+import java.util.List;
 import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
@@ -35,12 +37,7 @@ public class SwareaApp extends GameApplication {
         uiScore.setTranslateY(50);
         uiScore.fillProperty().bind(getop("stageColor"));
         uiScore.textProperty().bind(getsp("position"));
-
         addUINode(uiScore);
-
-        Group dpadView = getInput().createVirtualDpadView();
-
-        addUINode(dpadView, 0, 625);
     }
 
     @Override
@@ -81,6 +78,10 @@ public class SwareaApp extends GameApplication {
         settings.setHeight(SwareaConstants.WINDOW_INIT_HEIGHT);
         settings.setTitle("swarea");
         settings.setVersion("1.0.0");
+
+        settings.setSupportedLanguages(List.of(Language.ENGLISH));
+        settings.setMenuEnabled(true);
+        settings.setManualResizeEnabled(true);
     }
 
     public static void main(String[] args) {
